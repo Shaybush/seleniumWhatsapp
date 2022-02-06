@@ -1,0 +1,198 @@
+package co.edureka.selenium.webdriver.basic;
+
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.lang.Math;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByXPath;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.util.Random; 
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import com.beust.jcommander.internal.Console;
+
+public class launchbroswer{
+	public static WebDriver driver =null;
+
+	public static String filePath="C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\ExtraFiles\\BDimg.jpg";
+	
+	public static void main(String[] args) throws Exception	
+	{
+		String filePath = "C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\ExtraFiles\\AsafList.csv";
+		System.out.println("starting read user.csv file");
+		//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+		//LocalDateTime now = LocalDateTime.now(); 
+		//dtf.format(now);
+		//DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("2020/04/26 15:30:00"); 
+		//System.out.println(dtf2.format(now));
+		//System.out.println(dtf.format(now));
+		readCsv(filePath);
+	}	
+	//מתחבר לדפדפן הנוכחי+שולח הודעות
+	public static void send_Message(String name, String message,boolean con) throws Exception
+	{		
+		if(con!=true) // d'ont connect if its already connected 
+		{
+			//open the what'supp
+			System.setProperty("webdriver.chrome.driver","C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\driver\\chromedriver.exe");
+			driver =new ChromeDriver();
+			String baseUrl=("https://web.whatsapp.com//");
+			//open the web
+			driver.get(baseUrl);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(50,TimeUnit.SECONDS);
+		}
+		//driver.findElement(By.xpath("//label[@class='_2MSJr']")).click();// לוחץ על טקטס החיפוש
+		//driver.findElement(By.xpath("//div[@class='_2S1VP copyable-text selectable-text']")).sendKeys(name); // רושם את השם של אותו בן אדם
+		driver.findElement(By.xpath("//div[@class='_20NlL']//div[2]//div[1]")).click();// לוחץ על שיחה חדשה
+		driver.findElement(By.xpath("//div[@class='_2S1VP copyable-text selectable-text']")).sendKeys(name);// רושם את השם של אותו בן אדם
+		Thread.sleep(800); // עשה את העבודה
+		driver.findElement(By.xpath("//div[@class='_2EXPL']")).click();// לוחץ על השיחה הראשונה
+		//driver.findElement(By.xpath("//span[@title='" + name + "']")).click();// לוחץ על אותו שם לא תופס לאימוגים
+		send_Messeage_to_current_chat(message);
+		//_2EXPL
+	}
+	//שולח הודעה בצאט עצמו
+	public static void send_Messeage_to_current_chat(String mess) throws Exception
+	{
+		WebElement sendMessage=driver.findElement(By.className("_1Plpp")); // לוחץ על הטסט של אותו צאט
+		Thread.sleep(500);
+		sendMessage.sendKeys(mess); //עובד
+		Thread.sleep(800);
+		driver.findElement(By.xpath("//div[@class='YmSrp']//div[2]//div[1]")).click();
+		WebElement uploadElement = driver.findElement(By.xpath("//input[@accept='image/*,video/mp4,video/3gpp,video/quicktime']"));
+		uploadElement.sendKeys("C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\ExtraFiles\\hacker.jpg");
+		driver.findElement(By.xpath("//div[@class='_3hV1n yavlE']")).click();
+		Thread.sleep(2000);
+		// _1azEi
+		//accept="image/*,video/mp4,video/3gpp,video/quick time"
+	}
+
+	//מחלקה שמחכה להודעה 
+	public static void listener() throws Exception
+	{
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='OUeyt']")));//אם מופיע שקיבלת הודעה מהשיחה
+		//OUeyt
+	}
+	public static String ReadMsg(String path) throws Exception
+	{
+		BufferedReader reader = null;
+		reader = new BufferedReader(new FileReader(path));
+		String msg=reader.readLine();
+		return msg;
+	}
+	//מקבלת מערך של סטרינג מחזירה רק את השם הפרטי של אותו בן אדם
+	public static String FnameInput(String n) throws Exception
+	{
+		String[] parts=n.split("\\ ");
+		String beforeFirstDot = parts[0];
+		return beforeFirstDot;	
+	}
+	//פעולה שקוראת מהקובץ
+	public static void readCsv(String filePath) 
+	{
+		  BufferedReader reader = null;
+		  try {
+		   List<ContactDB> contacts = new ArrayList<ContactDB>();
+		   String line = "";
+		   reader = new BufferedReader(new FileReader(filePath));
+		   reader.readLine();
+		   
+		   while((line = reader.readLine()) != null)
+		   {
+		    String[] fields = line.split(",");
+		    // מה זה עושה
+		    if(fields.length > 0) {
+		     ContactDB contact = new ContactDB();
+		     contact.setId(Integer.parseInt(fields[0]));
+		     contact.setName(fields[1]);
+		     contact.setGender(fields[3]);
+		     //contact.setCheckSend(Integer.parseInt(fields[3]));
+		     contacts.add(contact);
+		    }
+		   }
+		   
+		   int j=0;
+		   String Fname,msg="",Oname,menMsg="",womenMsg="";
+		   boolean connection=false;
+		   String men1MsgPath="C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\ExtraFiles\\Men1.csv";
+		   String men2MsgPath="C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\ExtraFiles\\Men2.csv";
+		   String women1MsgPath="C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\ExtraFiles\\Women1.csv";
+		   String women2MsgPath="C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\ExtraFiles\\Women2.csv";
+		  // for(int h=0;h<5;h++)
+		  // {
+		   for(ContactDB c: contacts)
+		   {
+			   if(c.getId()%15==0)
+			   {
+				   int i= getRandomNumberInRange(10000,15000);
+				   Thread.sleep(i);
+				   System.out.println("sec= "+i);
+			   }
+			   if(j%3==0)
+			   {
+				   menMsg=(String)ReadMsg(men2MsgPath);
+				   womenMsg=ReadMsg(women2MsgPath);
+				   System.out.println(menMsg);
+				   j++;
+			   }
+			   else
+			   {
+				   menMsg=ReadMsg(men1MsgPath);
+				   womenMsg=ReadMsg(women1MsgPath);
+				   System.out.println(menMsg);
+				   j++;
+			   }
+			   Oname=c.getName();
+			   Fname=FnameInput(c.getName());
+				// מכניס לפה את ההודעה
+			   if(c.getGender().equals("Female"))
+			   {
+				msg=("מה הולך"+" "+Fname +"?\n"+womenMsg);	
+			   }
+			   if(c.getGender().equals("Male"))
+			   {
+				   msg=("מה הולך "+Fname+"\n"+menMsg);
+			   }
+
+				launchbroswer.send_Message(Oname,msg,connection);
+				connection=true;
+		   }
+		  // }
+
+		  //  System.out.printf("[contactId=%d, Name=%s, Gender=%s, check=%d]\n", c.getId(), c.getName(), c.isGender(),c.isCheckSend());	   
+		  } catch (Exception ex) {
+		   ex.printStackTrace();
+		  } finally {
+		   try {
+		    reader.close();
+		   } catch (Exception e) {
+		    e.printStackTrace();
+		   }
+		  }
+	 }
+	private static int getRandomNumberInRange(int min, int max) {
+
+		if (min >= max) {
+			throw new IllegalArgumentException("max must be greater than min");
+		}
+
+		Random r = new Random();
+		return r.nextInt((max - min) + 1) + min;
+	}
+	public static void tearDown() throws Exception {
+		driver.quit();
+		}
+	}

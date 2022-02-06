@@ -1,0 +1,10 @@
+git init
+git status
+git add .
+git commit -m 'whatever you want'
+git push
+git checkout -B 'newBranchName'
+git diff
+git reset --hard
+
+

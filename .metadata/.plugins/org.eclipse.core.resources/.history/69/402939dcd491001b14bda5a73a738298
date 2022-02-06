@@ -1,0 +1,63 @@
+package co.edureka.selenium.webdriver.basic;
+
+public class ContactDB 
+{
+	private int Id;
+	private String Name;
+	private boolean CheckSend=false;
+	private String Gender;
+	private int currentId;
+	public int getCurrentId() {
+		return currentId;
+	}
+	public void setCurrentId(int currentId) {
+		this.currentId = currentId;
+	}
+	public int getId() {
+		return Id;
+	}
+	public void setId(int id) {
+		Id = id;
+	}
+	public String getName() {
+		return Name;
+	}
+	public void setName(String name) {
+		Name = name;
+	}
+	public int isCheckSend() {
+		if(this.CheckSend==true)
+		{
+			return 1;
+		}
+		return 0;
+	}
+	public void setCheckSend(int checkSend) 
+	{
+		if(checkSend==1)// נשלחה הודעה
+		{
+			this.CheckSend=true;
+		}
+		if(checkSend==0)
+		{
+		this.CheckSend=false; // לא נשלחה
+		}
+	}
+	public int getGender() 
+	{
+		if(this.Gender.equals("Male"))
+		{
+			return 0; 
+		}
+			return 1; //if Female
+		
+	}
+	public void setGender(String gender) {
+		Gender = gender;
+	}
+
+
+
+
+
+}

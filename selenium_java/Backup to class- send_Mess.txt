@@ -1,0 +1,20 @@
+		driver.findElement(By.xpath("//div[@class='_2n-zq'][2]")).click();// לוחץ על שיחה חדשה
+		////driver.findElement(By.xpath("//label[@class='_3xpD_']")).click();// לוחץ על טקטס החיפוש
+		driver.findElement(By.xpath("//div[@class='_2_1wd copyable-text selectable-text']")).sendKeys(name);// כותב את השם של אותו בן אדם
+		Thread.sleep(1000); // wait a sec
+		driver.findElement(By.xpath("//div[@class='TbtXF']")).click(); //open current chat 
+		send_Message_to_current_chat(message);
+	}
+	//שולח הודעה בצאט עצמו
+	public static void send_Message_to_current_chat(String mess) throws Exception
+	{
+		WebElement sendMessage=driver.findElement(By.xpath("//*[@id=\"main\"]/footer/div[1]/div[2]/div/div[2]")); //cannot find the correct class for sending message 
+		//WebElement sendMessage=driver.findElement(By.className("_2A8P4")); //press on the chat 
+		sendMessage.sendKeys(mess); //write the string in the chat 
+		Thread.sleep(800);
+		driver.findElement(By.xpath("//div[@class='_2C9f1']")).click();//click on add photo 
+		WebElement uploadElement = driver.findElement(By.xpath("//li[1]//button[1]//input[1]")); //send the pic 
+		uploadElement.sendKeys("E:\\Engineer\\Selenium projects\\sj_demo2\\selenium_java\\ExtraFiles\\WhatsApp Image 2021-05-09 at 15.38.42.jpeg");// find the photo from pc
+		driver.findElement(By.xpath("/html/body/div/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/span/div/div")).click(); // send the text message 
+		Thread.sleep(2000); // wait 2 second 
+	}

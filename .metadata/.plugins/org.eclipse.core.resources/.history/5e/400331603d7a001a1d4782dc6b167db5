@@ -1,0 +1,77 @@
+package co.edureka.selenium.webdriver.basic;
+
+import java.awt.im.InputContext;
+import java.io.BufferedReader;
+import java.io.Reader;
+import java.util.concurrent.TimeUnit;
+import javax.print.DocFlavor.READER;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class launchbroswer{
+
+	public static WebDriver driver =null;
+	public static void main(String[] args)	
+	{
+		String Oname;
+		String names="נויה לוליי";
+		Oname=names;
+		//String[] names= {"אבא בושרי","עידן אליאס","נויה לוליי","אילן בושרי","יואב מהיסודי","עמית דקו"};
+		names=FnameInput(names);
+	//	for(int i=0;i<names.length;i++)
+	//	{
+			String msg=("חג שמח וכשר"+" "+names +"(זה לא אני רשמתי זה המחשב)");
+			//System.out.print(msg);
+			//System.out.print("\n");
+	//	}
+		launchbroswer.send_Message(Oname, msg);
+	}	
+	//מתחבר לדפדפן ומבצע את כל הפעולות
+	public static void send_Message(String names, String message)
+	{	
+		//open the whatsupp
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\driver\\chromedriver.exe");
+		driver =new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
+		String baseUrl=("https://web.whatsapp.com//");
+		//open the web
+		driver.get(baseUrl);
+		driver.manage().window().maximize();
+		//while(names!=null&&join==true)
+		driver.findElement(By.xpath("//*[@id=\"side\"]/header/div[2]/div/span/div[2]/div/span")).click();
+		driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/span/div/span/div/div[1]/div/label/div/div[2]")).sendKeys(names);
+		driver.findElement(By.xpath("//*[@id=\"app\"]/div/div/div[2]/div[1]/span/div/span/div/div[2]/div[1]/div/div/div[2]/div/div/div[2]")).click();
+		driver.findElement(By.xpath("//*[@id=\"main\"]/footer/div[1]/div[2]/div/div[2]")).sendKeys(message);
+		driver.findElement(By.xpath("//*[@id=\"main\"]/footer/div[1]/div[2]/div/div[2]")).sendKeys(Keys.ENTER);
+	}
+	//שולחץ הודעה לצאט ספציפי
+	public static void send_Messeage_to_current_chat(String message)
+	{
+	}
+
+	//מחלקה שמחכה להודעה 
+	public static void listener()
+	{}
+	//מקבלת מערך של סטרינג מחזירה רק את השם הפרטי של אותו בן אדם
+	public static String FnameInput(String n)
+	{
+		//String[] copy= {};
+		//for(int i=0;i<n.length;i++)
+		//{
+		String[] parts=n.split("\\ ");
+		String beforeFirstDot = parts[0];
+		return beforeFirstDot;
+		//copy[i]=beforeFirstDot;
+	//	}
+		//for(int i=0;i<copy.length;i++)
+		//{
+		//System.out.print(copy[i]);
+		//}
+		
+		
+	}
+	}
+	
+		

@@ -1,0 +1,28 @@
+1. check how can i add database(access) to this project
+2. check how can i read contact message and respond back
+Implicit Wait - wait by time
+
+Explicit Wait - wait until something append ,need to set max time of waiting:
+
+Exam-
+
+// click on the compose button as soon as the "compose" button is visible
+driver.findElement(By.xpath("//div[contains(text(),'COMPOSE')]")).click();
+
+Fluent Wait -no limit time of respond, also u can write fex commands into:
+
+Exam-
+Wait wait = new FluentWait(WebDriver reference)
+.withTimeout(timeout, SECONDS)
+.pollingEvery(timeout, SECONDS)
+.ignoring(Exception.class);
+
+WebElement foo=wait.until(new Function<WebDriver, WebElement>() {
+public WebElement applyy(WebDriver driver) {
+return driver.findElement(By.id("foo"));
+}
+});
+
+Big one:
+put machine learning to the action:"respong back text message", and learn from the last responds what to send back 
+finally do it for many contacts. 

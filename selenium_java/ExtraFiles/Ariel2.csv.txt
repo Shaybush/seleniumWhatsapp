@@ -1,0 +1,4 @@
+Id,Name,CheckSend,Gender
+1,אריאל שמוש,0,Female
+2,נועם פראנס,0,Male
+3,אמא בושרי,0,Female

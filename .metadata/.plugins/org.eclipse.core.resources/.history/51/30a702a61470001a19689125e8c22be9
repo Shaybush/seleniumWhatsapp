@@ -1,0 +1,56 @@
+package co.edureka.selenium.webdriver.basic;
+
+import java.awt.im.InputContext;
+import java.io.BufferedReader;
+import java.io.Reader;
+import java.util.concurrent.TimeUnit;
+import javax.print.DocFlavor.READER;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+
+public class launchbroswer{
+
+	public static WebDriver driver =null;
+	public static void main(String[] args)	
+	{
+		String name="Noam";
+		String msg="Hello Noam BOT talking";
+		launchbroswer.sendMessage(name, msg);
+	}	
+	public static void sendMessage(String name, String message)
+	{
+		//open the whatsupp
+		System.setProperty("webdriver.chrome.driver","C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\driver\\chromedriver.exe");
+		driver =new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+		String baseUrl=("https://web.whatsapp.com//");
+		//open the web
+		driver.get(baseUrl);
+		driver.manage().window().maximize();
+		driver.findElement(By.xpath("//div[@class='_2S1VP copyable-text selectable-text']")).sendKeys(arg0);;
+		
+		
+	}
+}	
+			//driver.findElement(By.xpath("//input[@name=\"email\"]")).sendKeys(name);
+
+			
+			//while(driver.findElement(By.xpath("//input[@name=\"data-rep\"]"))!=null)
+			//{
+				
+			//}
+			//String title =driver.getTitle();
+			
+			// put context on buttonBox
+			//driver.findElement(By.xpath("//input[@name=\"email\"]")).sendKeys(Email);
+			//click enter on some button
+			//driver.findElement(By.xpath("//input[@id=\"u_0_b\"]")).sendKeys(Keys.ENTER);
+			//driver.findElement(By.xpath("//input[@name=\"btnK\"]")).sendKeys(Keys.ENTER);;
+			//if(title.equalsIgnoreCase("Whatsapp.com"))
+			//{
+			//	System.out.println("we are in");
+			//}
+			

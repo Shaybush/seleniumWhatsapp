@@ -1,0 +1,139 @@
+package co.edureka.selenium.webdriver.basic;
+
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime; 
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class launchbroswer{
+	public static WebDriver driver =null;
+	public static String filePath="C:\\Users\\Windows10\\Desktop\\sj_demo2\\selenium_java\\BDimg.jpg";
+	
+	public static void main(String[] args) throws Exception	
+	{
+		String filePath = "E:\\Engineer\\Selenium projects\\sj_demo2\\selenium_java\\ExtraFiles\\Try.csv";
+		System.out.println("starting read user.csv file");
+		readCsv(filePath);
+		
+		//DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm"); 
+		//LocalDateTime now = LocalDateTime.now(); 
+		//System.out.println(dtf.format(now));  //current time 
+	}	
+	//מתחבר לדפדפן הנוכחי+שולח הודעות
+	public static void send_Message(String name, String message,boolean con) throws Exception
+	{		
+		if(con!=true) // d'ont connect if its already connected 
+		{
+			System.setProperty("webdriver.chrome.driver","E:\\Engineer\\Selenium projects\\sj_demo2\\selenium_java\\driver\\chromedriver.exe");
+			driver =new ChromeDriver();
+			String baseUrl=("https://web.whatsapp.com//");//open the web
+			driver.get(baseUrl);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(50,TimeUnit.SECONDS);
+		}
+		driver.findElement(By.xpath("//div[@class='_2n-zq'][2]")).click();// לוחץ על שיחה חדשה
+		//driver.findElement(By.xpath("//label[@class='_3xpD_']")).click();// לוחץ על טקטס החיפוש
+		driver.findElement(By.xpath("//div[@class='_2_1wd copyable-text selectable-text']")).sendKeys(name);// כותב את השם של אותו בן אדם
+		Thread.sleep(1000); // wait a sec
+		driver.findElement(By.xpath("//div[@class='TbtXF']")).click(); //open current chat 
+		send_Messeage_to_current_chat(message);
+	}
+	//שולח הודעה בצאט עצמו
+	public static void send_Messeage_to_current_chat(String mess) throws Exception
+	{
+		WebElement sendMessage=driver.findElement(By.xpath("'//*[@id=\"main\"]/footer/div[1]/div[2]/div/div[2]'")); //cannot find the correct class for sending message 
+		//WebElement sendMessage=driver.findElement(By.className("_2A8P4")); //press on the chat 
+		sendMessage.sendKeys(mess); //write the string in the chat 
+		Thread.sleep(800);
+		driver.findElement(By.xpath("//div[@class='_2C9f1']")).click();//click on add photo 
+		WebElement uploadElement = driver.findElement(By.xpath("//li[1]//button[1]//input[1]")); //send the pic 
+		uploadElement.sendKeys("E:\\Engineer\\Selenium projects\\sj_demo2\\selenium_java\\ExtraFiles\\sheep.png");// find the photo from pc
+		driver.findElement(By.xpath("/html/body/div/div[1]/div[1]/div[2]/div[2]/span/div[1]/span/div[1]/div/div[2]/span/div/div")).click(); // send the text message 
+		Thread.sleep(2000); // wait 2 second 
+	}
+
+	//מחלקה שמחכה להודעה 
+	public static void listener() throws Exception // wait for receive message than response 
+	{
+		WebDriverWait wait = new WebDriverWait(driver,30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='OUeyt']")));//אם מופיע שקיבלת הודעה מהשיחה
+	}
+	public static String FnameInput(String n) throws Exception // get Full name than output just the first name 
+	{
+		String[] parts=n.split("\\ ");
+		String beforeFirstDot = parts[0];
+		return beforeFirstDot;	
+	}
+	//פעולה שקוראת מהקובץ
+	public static void readCsv(String filePath) 
+	{
+		  BufferedReader reader = null;
+		  
+		  try {
+		   List<ContactDB> contacts = new ArrayList<ContactDB>();
+		   String line = "";
+		   reader = new BufferedReader(new FileReader(filePath));
+		   reader.readLine();
+		   while((line = reader.readLine()) != null)
+		   {
+		    String[] fields = line.split(","); // defines the comma as a separation 
+		    if(fields.length > 0) {
+		     ContactDB contact = new ContactDB();
+		     contact.setId(Integer.parseInt(fields[0]));
+		     contact.setName(fields[1]);
+		     contact.setGender(fields[2]);
+		     //contact.setCheckSend(Integer.parseInt(fields[3]));
+		     contacts.add(contact);
+		    }
+		   }
+		   String Fname,msg="",Oname;
+		   boolean connection=false;
+		   for(ContactDB c: contacts) {
+			   Oname=c.getName();
+			   Fname=FnameInput(c.getName());
+				// מכניס לפה את ההודעה
+			   if(c.getGender().equals("Female"))// לא עובד טוב הזין הזה
+			   {
+				msg=("מה הולך"+" "+Fname +"?\n"+"אני ואסף סקעת חוגגים יום הולדת 20 בתאריך ה 21.5 רציתי לדעת אם תוכלי להגיע?");	
+			   }
+			   if(c.getGender().equals("Male"))
+			   {
+				   msg=("מה הולך"+" "+Fname+ "?\n"+"אני ואסף חוגגים יום הולדת 20 בתאריך ה 21.5 רציתי לדעת אם תוכל להגיע יאח");
+			   }
+				launchbroswer.send_Message(Oname,msg,connection);
+				connection=true;
+			   }
+
+		  //  System.out.printf("[contactId=%d, Name=%s, Gender=%s, check=%d]\n", c.getId(), c.getName(), c.isGender(),c.isCheckSend());
+		   
+		   
+		  } catch (Exception ex) {
+		   ex.printStackTrace();
+		  } finally {
+		   try {
+		    reader.close();
+		   } catch (Exception e) {
+		    e.printStackTrace();
+		   }
+		  }
+	 }
+	public static void tearDown() throws Exception {
+		driver.quit();
+		}
+	}
+//לחיצה על כפתור החיפוש
+//driver.findElement(By.xpath("//label[@class='_2MSJr']")).click();
+		
